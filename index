@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>여러개 마커에 이벤트 등록하기1</title>
+    
+</head>
+<body>
+<div id="map" style="width:100%;height:350px;"></div>
+
+<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=cf233abee66a14cccf4a438dbf1604f2"></script>
+<script>
+var mapContainer = document.getElementById('map'), // 지도를 표시할 div  
+    mapOption = { 
+        center: new kakao.maps.LatLng(33.450701, 126.570667), // 지도의 중심좌표
+        level: 3 // 지도의 확대 레벨
+    };
+
+var map = new kakao.maps.Map(mapContainer, mapOption); // 지도를 생성합니다
+ 
+// 마커를 표시할 위치와 내용을 가지고 있는 객체 배열입니다 
+var positions = [
+    {
+content: '<div>셀린박 갤러리</div>',
+latlng: new kakao.maps.LatLng(37.52579008,127.029757)
+},
+{
+content: '<div>아이러브아트센터</div>',
+latlng: new kakao.maps.LatLng(37.52579008,127.029757)
+},
+{
+content: '<div>아이러브아트센터</div>',
+latlng: new kakao.maps.LatLng(37.52579008,127.029757)
+},
+{
+content: '<div>갤러리 JJ</div>',
+latlng: new kakao.maps.LatLng(37.5183075,127.0283879)
+},
+{
+content: '<div>오유아트홀</div>',
+latlng: new kakao.maps.LatLng(37.48369956,127.0464155)
+},
+{
+content: '<div>강남문화재단</div>',
+latlng: new kakao.maps.LatLng(37.51590994,127.0521409)
+},
+{
+content: '<div>SETEC전시장(서울무역전시장)</div>',
+latlng: new kakao.maps.LatLng(37.4956774,127.0719118)
+},
+{
+content: '<div>코리아나미술관</div>',
+latlng: new kakao.maps.LatLng(37.52406916,127.032811)
+},
+{
+content: '<div>Mfor 아트스페이스</div>',
+latlng: new kakao.maps.LatLng(37.50350266,127.0365353)
+},
+{
+content: '<div>대치1동 작은도서관</div>',
+latlng: new kakao.maps.LatLng(37.49324572,127.0567749)
+},
+{
+content: '<div>강남구립못골한옥어린이도서관</div>',
+latlng: new kakao.maps.LatLng(37.47330498,127.0997276)
+},
+{
+content: '<div>강남구립열린도서관</div>',
+latlng: new kakao.maps.LatLng(37.51744977,127.0406358)
+},
+{
+content: '<div>강남구립논현정보도서관</div>',
+latlng: new kakao.maps.LatLng(37.51386352,127.0293228)
+},
+{
+content: '<div>강남구립청담도서관</div>',
+latlng: new kakao.maps.LatLng(37.52509058,127.0492919)
+},
+{
+content: '<div>강남구립정다운도서관</div>',
+latlng: new kakao.maps.LatLng(37.51911268,127.0464374)
+},
+{
+content: '<div>강남구립도곡정보문화도서관</div>',
+latlng: new kakao.maps.LatLng(37.48831184,127.0388787)
+},
+{
+content: '<div>KB아트홀</div>',
+latlng: new kakao.maps.LatLng(37.49915888,127.0302624)
+},
+{
+content: '<div>강남구립역삼도서관</div>',
+latlng: new kakao.maps.LatLng(37.49537384,127.0332825)
+},
+{
+content: '<div>강남구립역삼푸른솔도서관</div>',
+latlng: new kakao.maps.LatLng(37.49649864,127.03203)
+},
+{
+content: '<div>강남구립행복한도서관</div>',
+latlng: new kakao.maps.LatLng(37.50230604,127.0641871)
+},
+{
+content: '<div>강남구립즐거운도서관</div>',
+latlng: new kakao.maps.LatLng(37.49972884,127.0578474)
+},
+{
+content: '<div>강남구립대치도서관</div>',
+latlng: new kakao.maps.LatLng(37.49961649,127.0659173)
+},
+{
+content: '<div>강남구립논현도서관</div>',
+latlng: new kakao.maps.LatLng(37.51727791,127.0371879)
+},
+{
+content: '<div>광림아트센터 장천홀</div>',
+latlng: new kakao.maps.LatLng(37.52388724,127.0251546)
+},
+{
+content: '<div>마리아칼라스홀</div>',
+latlng: new kakao.maps.LatLng(37.50249604,127.066033)
+},
+{
+content: '<div>그랜드 컨퍼런스룸</div>',
+latlng: new kakao.maps.LatLng(37.5118588,127.0601958)
+},
+{
+content: '<div>광림아트센터 BBCH홀</div>',
+latlng: new kakao.maps.LatLng(37.52389436,127.02558)
+},
+{
+content: '<div>윤당아트홀</div>',
+latlng: new kakao.maps.LatLng(37.52564382,127.0338661)
+},
+{
+content: '<div>강남문화원</div>',
+latlng: new kakao.maps.LatLng(37.49649864,127.03203)
+},
+{
+content: '<div>강남구립못골도서관</div>',
+latlng: new kakao.maps.LatLng(37.47153801,127.0965826)
+},
+{
+content: '<div>오유아트홀</div>',
+latlng: new kakao.maps.LatLng(37.48373201,127.0463748)
+},
+{
+content: '<div>역삼1강남씨어터</div>',
+latlng: new kakao.maps.LatLng(37.49535583,127.0332508)
+},
+{
+content: '<div>세실아트홀</div>',
+latlng: new kakao.maps.LatLng(37.52815277,127.0318444)
+},
+{
+content: '<div>대치2문화센터 대강당</div>',
+latlng: new kakao.maps.LatLng(37.5022556,127.064169)
+},
+{
+content: '<div>강남구민회관</div>',
+latlng: new kakao.maps.LatLng(37.4938226,127.0642688)
+},
+{
+content: '<div>강남구청</div>',
+latlng: new kakao.maps.LatLng(37.517305,127.047502)
+},
+{
+content: '<div>강남구민체육관</div>',
+latlng: new kakao.maps.LatLng(37.477132,127.0518293)
+},
+{
+content: '<div>국립어린이청소년 도서관</div>',
+latlng: new kakao.maps.LatLng(37.5009712,127.0296909)
+},
+{
+content: '<div>LG아트센터</div>',
+latlng: new kakao.maps.LatLng(37.5021909,127.0377378)
+},
+{
+content: '<div>브로드웨이</div>',
+latlng: new kakao.maps.LatLng(37.5166444,127.021734)
+},
+{
+content: '<div>갤러리 원 (원화랑)</div>',
+latlng: new kakao.maps.LatLng(37.527525,127.045863)
+},
+{
+content: '<div>카이스갤러리</div>',
+latlng: new kakao.maps.LatLng(37.5285429,127.0350311)
+},
+{
+content: '<div>박영덕화랑</div>',
+latlng: new kakao.maps.LatLng(37.525766,127.044952)
+},
+{
+content: '<div>밀알학교 세라믹 팔레스홀</div>',
+latlng: new kakao.maps.LatLng(37.4858171,127.0824692)
+},
+{
+content: '<div>태권도기념관</div>',
+latlng: new kakao.maps.LatLng(37.5019899,127.03031)
+},
+{
+content: '<div>이스탄불 문화원</div>',
+latlng: new kakao.maps.LatLng(37.4994311,127.0358578)
+},
+{
+content: '<div>국기원</div>',
+latlng: new kakao.maps.LatLng(37.5019899,127.03031)
+},
+{
+content: '<div>LIG아트홀</div>',
+latlng: new kakao.maps.LatLng(37.5490322,126.911529)
+},
+{
+content: '<div>웅진씽크빅아트홀(구 계몽아트홀)</div>',
+latlng: new kakao.maps.LatLng(37.4980679,127.0442125)
+},
+{
+content: '<div>도산안창호 기념관</div>',
+latlng: new kakao.maps.LatLng(37.5239978,127.0356302)
+},
+{
+content: '<div>예화랑</div>',
+latlng: new kakao.maps.LatLng(37.5228454,127.0222649)
+},
+{
+content: '<div>어반아트</div>',
+latlng: new kakao.maps.LatLng(37.5207027,127.0230798)
+},
+{
+content: '<div>코엑스전시장</div>',
+latlng: new kakao.maps.LatLng(37.5103947,127.0611127)
+},
+{
+content: '<div>김치박물관</div>',
+latlng: new kakao.maps.LatLng(37.5129437,127.0571142)
+},
+{
+content: '<div>성암아트홀</div>',
+latlng: new kakao.maps.LatLng(37.5110475,127.0429711)
+},
+{
+content: '<div>강남도서관</div>',
+latlng: new kakao.maps.LatLng(37.5137356,127.0469916)
+},
+{
+content: '<div>코엑스 오디토리움</div>',
+latlng: new kakao.maps.LatLng(37.5125518,127.0587767)
+},
+{
+content: '<div>백암아트홀</div>',
+latlng: new kakao.maps.LatLng(37.5103944,127.066052)
+},
+{
+content: '<div>민속극장풍류</div>',
+latlng: new kakao.maps.LatLng(37.50991,127.044364)
+},
+{
+content: '<div>라트어린이극장</div>',
+latlng: new kakao.maps.LatLng(37.4842358,127.0422031)
+},
+{
+content: '<div>포스코미술관</div>',
+latlng: new kakao.maps.LatLng(37.5057694,127.0558879)
+},
+{
+content: '<div>KT&G 상상아트홀</div>',
+latlng: new kakao.maps.LatLng(37.5069075,127.0650936)
+},
+{
+content: '<div>강남구민회관강당</div>',
+latlng: new kakao.maps.LatLng(37.4938226,127.0642688)
+},
+{
+content: '<div>CMG섬유센터 이벤트홀</div>',
+latlng: new kakao.maps.LatLng(37.5076895,127.0603667)
+},
+{
+content: '<div>경기여고 경운박물관</div>',
+latlng: new kakao.maps.LatLng(37.4878684,127.0660782)
+},
+{
+content: '<div>개포도서관</div>',
+latlng: new kakao.maps.LatLng(37.4829604,127.063769)
+}
+];
+
+for (var i = 0; i < positions.length; i ++) {
+    // 마커를 생성합니다
+    var marker = new kakao.maps.Marker({
+        map: map, // 마커를 표시할 지도
+        position: positions[i].latlng // 마커의 위치
+    });
+
+    // 마커에 표시할 인포윈도우를 생성합니다 
+    var infowindow = new kakao.maps.InfoWindow({
+        content: positions[i].content // 인포윈도우에 표시할 내용
+    });
+
+    // 마커에 mouseover 이벤트와 mouseout 이벤트를 등록합니다
+    // 이벤트 리스너로는 클로저를 만들어 등록합니다 
+    // for문에서 클로저를 만들어 주지 않으면 마지막 마커에만 이벤트가 등록됩니다
+    kakao.maps.event.addListener(marker, 'mouseover', makeOverListener(map, marker, infowindow));
+    kakao.maps.event.addListener(marker, 'mouseout', makeOutListener(infowindow));
+}
+
+// 인포윈도우를 표시하는 클로저를 만드는 함수입니다 
+function makeOverListener(map, marker, infowindow) {
+    return function() {
+        infowindow.open(map, marker);
+    };
+}
+
+// 인포윈도우를 닫는 클로저를 만드는 함수입니다 
+function makeOutListener(infowindow) {
+    return function() {
+        infowindow.close();
+    };
+}
+
+/* 아래와 같이도 할 수 있습니다 */
+/*
+for (var i = 0; i < positions.length; i ++) {
+    // 마커를 생성합니다
+    var marker = new kakao.maps.Marker({
+        map: map, // 마커를 표시할 지도
+        position: positions[i].latlng // 마커의 위치
+    });
+
+    // 마커에 표시할 인포윈도우를 생성합니다 
+    var infowindow = new kakao.maps.InfoWindow({
+        content: positions[i].content // 인포윈도우에 표시할 내용
+    });
+
+    // 마커에 이벤트를 등록하는 함수 만들고 즉시 호출하여 클로저를 만듭니다
+    // 클로저를 만들어 주지 않으면 마지막 마커에만 이벤트가 등록됩니다
+    (function(marker, infowindow) {
+        // 마커에 mouseover 이벤트를 등록하고 마우스 오버 시 인포윈도우를 표시합니다 
+        kakao.maps.event.addListener(marker, 'mouseover', function() {
+            infowindow.open(map, marker);
+        });
+
+        // 마커에 mouseout 이벤트를 등록하고 마우스 아웃 시 인포윈도우를 닫습니다
+        kakao.maps.event.addListener(marker, 'mouseout', function() {
+            infowindow.close();
+        });
+    })(marker, infowindow);
+}
+*/
+</script>
+</body>
+</html>
